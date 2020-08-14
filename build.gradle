@@ -1,0 +1,51 @@
+group 'com.karmios.code.modulo'
+version '0.1'
+
+buildscript {
+    ext.kotlin_version = '1.3.72'
+    ext.slf4jVersion = '1.7.26'
+    ext.pf4jVersion = '3.4.0'
+    ext.exposedVersion = '0.26.2'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-dev/' }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:$kotlin_version"
+    }
+}
+
+subprojects {
+    apply plugin: 'kotlin'
+    apply plugin: 'kotlin-kapt'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+        implementation "org.slf4j:slf4j-api:$slf4jVersion"
+        implementation "org.slf4j:slf4j-log4j12:$slf4jVersion"
+        implementation "com.jessecorbett:diskord-jvm:1.7.1"
+        implementation "org.jetbrains.exposed:exposed-core:$exposedVersion"
+        implementation "org.pf4j:pf4j:$pf4jVersion"
+        annotationProcessor "org.pf4j:pf4j:$pf4jVersion"
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+}

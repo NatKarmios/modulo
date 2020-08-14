@@ -1,0 +1,10 @@
+dependencies {
+    implementation "com.beust:klaxon:5.2"
+    implementation "khttp:khttp:1.0.0"
+    implementation "io.github.classgraph:classgraph:4.8.62"
+    implementation "org.jetbrains.exposed:exposed-jdbc:$exposedVersion"
+    runtimeOnly "org.postgresql:postgresql:42.2.14"
+    runtimeOnly "org.xerial:sqlite-jdbc:3.32.3.2"
+
+    implementation project(":modulo-api")
+}
