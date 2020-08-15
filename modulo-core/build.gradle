@@ -1,6 +1,11 @@
+buildscript {
+    ext.fuelVersion = '2.2.3'
+}
+
 dependencies {
     implementation "com.beust:klaxon:5.2"
-    implementation "khttp:khttp:1.0.0"
+    implementation "com.github.kittinunf.fuel:fuel:$fuelVersion"
+    implementation "com.github.kittinunf.fuel:fuel-coroutines:$fuelVersion"
     implementation "io.github.classgraph:classgraph:4.8.62"
     implementation "org.jetbrains.exposed:exposed-jdbc:$exposedVersion"
     runtimeOnly "org.postgresql:postgresql:42.2.14"
