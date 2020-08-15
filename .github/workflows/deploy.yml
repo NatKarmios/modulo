@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-        - name: Deploy API to GitHub Packages
-          run: ./gradlew githubRelease
-          env:
-            TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy API to GitHub Packages
+        run: ./gradlew githubRelease
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
