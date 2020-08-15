@@ -13,3 +13,13 @@ dependencies {
 
     compile project(":modulo-api")
 }
+
+jar {
+    archiveBaseName = "ModuloCore-${parent.version}"
+    manifest {
+        attributes 'Main-Class': 'com.karmios.code.modulo.core.MainKt'
+    }
+
+    // make fat jar
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
