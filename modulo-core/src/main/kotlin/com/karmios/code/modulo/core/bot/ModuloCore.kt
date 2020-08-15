@@ -82,6 +82,7 @@ class ModuloCore(override val modules: List<Mod>): Modulo {
                 }
 
                 assignListeners()
+                runBlocking { modules.forEach { it.onInit(this@ModuloCore) } }
             }
         }
     }
