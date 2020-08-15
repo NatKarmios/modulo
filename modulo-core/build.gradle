@@ -1,6 +1,16 @@
 buildscript {
     ext.fuelVersion = '2.2.3'
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.breadmoirai:github-release:2.2.12"
+    }
 }
+
+apply plugin: "com.github.breadmoirai.github-release"
 
 dependencies {
     compile "com.beust:klaxon:5.2"
@@ -22,4 +32,17 @@ jar {
 
     // make fat jar
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
+}
+
+githubRelease {
+    token System.getenv("TOKEN") ?: ""
+
+    owner "NatKarmios"
+    repo "modulo"
+    tagName "v${parent.version}"
+    releaseName "v${parent.version}"
+    body "## CHANGELOG\n${changelog().call()}"
+    releaseAssets jar.destinationDirectory.getAsFileTree().files
+
+    dryRun true
+}
