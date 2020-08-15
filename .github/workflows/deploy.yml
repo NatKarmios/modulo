@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Deploy core to GitHub releases
-        run: ./gradlew publish
+        run: ./gradlew githubRelease
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -29,6 +29,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Deploy API to GitHub Packages
-        run: ./gradlew githubRelease
+        run: ./gradlew publish
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
