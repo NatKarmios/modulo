@@ -1,0 +1,49 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        api(MavenPublication) {
+            groupId = parent.group
+            artifactId = project.name
+            version = parent.version
+
+            pom {
+                name.set(project.name)
+                description.set("Used to create Modulo plugins")
+                url.set("https://github.com/NatKarmios/modulo")
+
+                licenses {
+                    license {
+                        name.set("GNU General Public License v3.0")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("nat karmios")
+                        name.set("Nat Karmios")
+                        email.set("nat@karmios.com")
+                    }
+                }
+
+                scm {
+                    url.set("https://github.com/NatKarmios/modulo")
+                    connection.set("scm:git:https://github.com/NatKarmios/modulo.git")
+                    developerConnection.set("scm:git:https://github.com/NatKarmios/modulo.git")
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/NatKarmios/modulo")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+}
