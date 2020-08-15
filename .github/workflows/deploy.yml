@@ -17,7 +17,6 @@ jobs:
       - name: Deploy core to GitHub releases
         run: ./gradlew publish
         env:
-          USERNAME: ${{ GITHUB_ACTOR }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_api:

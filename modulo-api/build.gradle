@@ -41,7 +41,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/NatKarmios/modulo")
             credentials {
-                username = System.getenv("USERNAME")
+                username = System.getenv("GITHUB_ACTOR") ?: System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
             }
         }
