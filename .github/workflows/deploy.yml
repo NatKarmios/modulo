@@ -1,8 +1,7 @@
 name: Deploy
 on:
-  workflow_dispatch:
   push:
-    branches: [ master, maven-deploy ]
+    branches: [ master ]
 
 jobs:
   deploy_core:
