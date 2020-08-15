@@ -1,0 +1,33 @@
+name: Deploy
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy_core:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Deploy core to GitHub releases
+        run: ./gradlew githubRelease
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy_api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Deploy API to GitHub Packages
+        run: ./gradlew publish
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}

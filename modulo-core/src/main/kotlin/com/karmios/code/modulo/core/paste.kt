@@ -2,9 +2,10 @@ package com.karmios.code.modulo.core
 
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
+import com.github.kittinunf.fuel.coroutines.awaitString
+import com.github.kittinunf.fuel.httpPost
 import com.karmios.code.modulo.core.PasteResponseType.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.sendBlocking
+import org.slf4j.LoggerFactory
 import kotlin.text.StringBuilder
 
 private const val BASE_URL = "https://hastebin.com"
@@ -18,21 +19,14 @@ enum class PasteResponseType {
 }
 
 suspend fun paste(content: String, responseType: PasteResponseType = RAW_URL): String? {
-    val channel = Channel<String?>()
+    val log = LoggerFactory.getLogger("paste.kt")
 
-    khttp.async.post(
-        url = ENDPOINT_URL,
-        data = content,
-        onResponse = {
-            channel.sendBlocking(this.text)
-            channel.close()
-        },
-        onError = {
-            channel.sendBlocking(null)
-            channel.close()
-        }
-    )
-    val rawJson = channel.receive() ?: return null
+    val rawJson = try {
+        ENDPOINT_URL.httpPost().body(content).awaitString()
+    } catch (e: Exception) {
+        log.warn("Failed to paste to '$ENDPOINT_URL!'\n${e.stackTrace}")
+        return null
+    }
 
     val pasteId = (Parser.default().parse(StringBuilder(rawJson)) as JsonObject).string("key")
     return when (responseType) {
