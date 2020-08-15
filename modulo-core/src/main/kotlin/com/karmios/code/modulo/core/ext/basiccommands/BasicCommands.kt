@@ -2,21 +2,12 @@
 
 package com.karmios.code.modulo.core.ext.basiccommands
 
-import com.jessecorbett.diskord.api.model.Message
-import com.karmios.code.modulo.api.*
+import com.karmios.code.modulo.api.Modulo
+import com.karmios.code.modulo.api.ModuloModule
 import com.karmios.code.modulo.api.persist.ModuleSavedData
 import com.karmios.code.modulo.api.persist.ModuleSettings
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
-
-
-suspend fun Modulo.respond(msg: Message) {
-    if (msg.content == "hi") {
-        with(bot) {
-            msg.reply("hello there")
-        }
-    }
-}
 
 
 @Extension
@@ -24,9 +15,6 @@ class BasicCommands : ModuloModule<ModuleSettings, BasicCommandsSavedData>() {
     override val name = "Basic Commands"
     override val description = "Basic commands for core bot functionality"
     override val commands = commandList
-    internal val log = LoggerFactory.getLogger(javaClass)
-
-    override val onMessage: Listeners<Message> = listOf(Modulo::respond)
 
     override val defaultSavedData = BasicCommandsSavedData()
     override suspend fun onInit(modulo: Modulo) {
@@ -44,6 +32,7 @@ class BasicCommands : ModuloModule<ModuleSettings, BasicCommandsSavedData>() {
         }
     }
 
+    private val log = LoggerFactory.getLogger(javaClass)
 }
 
 class BasicCommandsSavedData(

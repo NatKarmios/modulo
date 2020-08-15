@@ -12,7 +12,7 @@ private const val BASE_HELP_URL = "https://natkarmios.github.io/MarkdownViewer/?
 private const val BASE_HEADER_LEVEL = 1
 private const val CMD_HEADER_LEVEL = 2
 
-internal suspend fun Modulo.getHelpUrl(md: String) = paste(md)?.let { BASE_HELP_URL + it }
+internal suspend fun getHelpUrl(md: String) = paste(md)?.let { BASE_HELP_URL + it }
 
 internal val Modulo.helpMarkdown: String
     get() = StringBuilder()
