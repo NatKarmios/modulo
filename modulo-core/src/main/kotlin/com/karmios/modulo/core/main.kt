@@ -1,7 +1,7 @@
-package com.karmios.code.modulo.core
+package com.karmios.modulo.core
 
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.core.bot.ModuloCore
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.core.bot.ModuloCore
 import org.apache.log4j.Level
 import org.apache.log4j.spi.RootLogger
 import org.pf4j.*

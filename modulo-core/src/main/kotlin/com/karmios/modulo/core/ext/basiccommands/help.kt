@@ -1,11 +1,11 @@
-package com.karmios.code.modulo.core.ext.basiccommands
+package com.karmios.modulo.core.ext.basiccommands
 
-import com.karmios.code.modulo.api.Modulo
-import com.karmios.code.modulo.api.ModuloCmd
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.core.paste
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.api.Modulo
+import com.karmios.modulo.api.ModuloCmd
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.core.paste
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.persist.ModuleSettings
 
 
 private const val BASE_HELP_URL = "https://natkarmios.github.io/MarkdownViewer/?url=https://cors-anywhere.herokuapp.com/"

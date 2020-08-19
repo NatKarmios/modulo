@@ -1,10 +1,10 @@
-package com.karmios.code.modulo.core
+package com.karmios.modulo.core
 
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.github.kittinunf.fuel.httpPost
-import com.karmios.code.modulo.core.PasteResponseType.*
+import com.karmios.modulo.core.PasteResponseType.*
 import org.slf4j.LoggerFactory
 import kotlin.text.StringBuilder
 

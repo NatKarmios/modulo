@@ -1,9 +1,9 @@
-package com.karmios.code.modulo.core.ext.basiccommands
+package com.karmios.modulo.core.ext.basiccommands
 
 import com.jessecorbett.diskord.api.model.Message
 import com.jessecorbett.diskord.util.sendMessage
-import com.karmios.code.modulo.api.Modulo
-import com.karmios.code.modulo.api.ModuloCmd
+import com.karmios.modulo.api.Modulo
+import com.karmios.modulo.api.ModuloCmd
 
 internal val BasicCommands.commandList: List<ModuloCmd>
         get() {

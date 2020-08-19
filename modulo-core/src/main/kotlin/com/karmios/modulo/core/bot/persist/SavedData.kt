@@ -1,12 +1,12 @@
-package com.karmios.code.modulo.core.bot.persist
+package com.karmios.modulo.core.bot.persist
 
 import com.beust.klaxon.Klaxon
 import com.beust.klaxon.TypeAdapter
 import com.beust.klaxon.TypeFor
-import com.karmios.code.modulo.api.Mod
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.core.bot.SAVED_DATA_FILE
+import com.karmios.modulo.api.Mod
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.core.bot.SAVED_DATA_FILE
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileNotFoundException
