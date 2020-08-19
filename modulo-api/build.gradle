@@ -8,6 +8,8 @@ publishing {
             artifactId = project.name
             version = parent.version
 
+            from components["java"]
+
             pom {
                 name = project.name
                 description = "Used to create Modulo plugins"
