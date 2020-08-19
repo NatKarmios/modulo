@@ -41,7 +41,7 @@ githubRelease {
     repo "modulo"
     tagName "v${parent.version}"
     releaseName "v${parent.version}"
-    body "## CHANGELOG\n${changelog().call()}"
+//    body "## CHANGELOG\n${changelog().call()}"
     releaseAssets jar.destinationDirectory.getAsFileTree().files
     prerelease (System.getenv("IS_PRERELEASE") == "1")
 }
