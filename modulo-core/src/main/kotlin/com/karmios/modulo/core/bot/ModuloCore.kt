@@ -3,13 +3,11 @@
 package com.karmios.modulo.core.bot
 
 import com.jessecorbett.diskord.api.model.*
-import com.jessecorbett.diskord.api.websocket.events.*
 import com.jessecorbett.diskord.dsl.Bot
 import com.jessecorbett.diskord.dsl.bot
 import com.jessecorbett.diskord.dsl.command
 import com.jessecorbett.diskord.dsl.commands
 import com.jessecorbett.diskord.util.authorId
-import com.karmios.code.modulo.api.*
 import com.karmios.modulo.api.persist.CoreSettings
 import com.karmios.modulo.api.persist.ModuleSavedData
 import com.karmios.modulo.api.persist.ModuleSettings
