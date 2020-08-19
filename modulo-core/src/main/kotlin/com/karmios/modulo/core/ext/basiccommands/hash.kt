@@ -1,4 +1,4 @@
-package com.karmios.code.modulo.core.ext.basiccommands
+package com.karmios.modulo.core.ext.basiccommands
 
 import kotlinx.serialization.toUtf8Bytes
 import java.security.MessageDigest

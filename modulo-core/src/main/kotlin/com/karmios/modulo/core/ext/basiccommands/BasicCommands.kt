@@ -1,11 +1,11 @@
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package com.karmios.code.modulo.core.ext.basiccommands
+package com.karmios.modulo.core.ext.basiccommands
 
-import com.karmios.code.modulo.api.Modulo
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.api.Modulo
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.persist.ModuleSettings
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
 

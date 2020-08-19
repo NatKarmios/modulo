@@ -1,10 +1,10 @@
-package com.karmios.code.modulo.core.bot
+package com.karmios.modulo.core.bot
 
 import com.jessecorbett.diskord.api.model.Message
 import com.jessecorbett.diskord.dsl.Bot
 import com.jessecorbett.diskord.util.authorId
-import com.karmios.code.modulo.api.Modulo
-import com.karmios.code.modulo.api.ModuloCmd
+import com.karmios.modulo.api.Modulo
+import com.karmios.modulo.api.ModuloCmd
 import kotlinx.coroutines.launch
 
 const val DB_FILE         = "modulo.db"

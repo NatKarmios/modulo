@@ -1,11 +1,11 @@
-package com.karmios.code.modulo.core.bot.persist
+package com.karmios.modulo.core.bot.persist
 
 import com.beust.klaxon.*
-import com.karmios.code.modulo.api.Mod
-import com.karmios.code.modulo.api.persist.ModuleSettings
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.api.persist.CoreSettings
-import com.karmios.code.modulo.core.bot.SETTINGS_FILE
+import com.karmios.modulo.api.Mod
+import com.karmios.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.api.persist.CoreSettings
+import com.karmios.modulo.core.bot.SETTINGS_FILE
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileNotFoundException

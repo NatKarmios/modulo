@@ -1,11 +1,11 @@
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package com.karmios.code.modulo.core.bot.persist
+package com.karmios.modulo.core.bot.persist
 
-import com.karmios.code.modulo.api.Mod
-import com.karmios.code.modulo.api.ModuloModule
-import com.karmios.code.modulo.core.bot.ModuloCore
-import com.karmios.code.modulo.core.bot.DB_FILE
+import com.karmios.modulo.api.Mod
+import com.karmios.modulo.api.ModuloModule
+import com.karmios.modulo.core.bot.ModuloCore
+import com.karmios.modulo.core.bot.DB_FILE
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table

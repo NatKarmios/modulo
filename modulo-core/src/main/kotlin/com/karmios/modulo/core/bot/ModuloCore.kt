@@ -1,6 +1,6 @@
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package com.karmios.code.modulo.core.bot
+package com.karmios.modulo.core.bot
 
 import com.jessecorbett.diskord.api.model.*
 import com.jessecorbett.diskord.api.websocket.events.*
@@ -10,13 +10,16 @@ import com.jessecorbett.diskord.dsl.command
 import com.jessecorbett.diskord.dsl.commands
 import com.jessecorbett.diskord.util.authorId
 import com.karmios.code.modulo.api.*
-import com.karmios.code.modulo.api.persist.CoreSettings
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.persist.ModuleSettings
-import com.karmios.code.modulo.core.bot.persist.initDB
-import com.karmios.code.modulo.core.bot.persist.loadSavedData
-import com.karmios.code.modulo.core.bot.persist.loadSettings
-import com.karmios.code.modulo.core.bot.persist.write
+import com.karmios.modulo.api.persist.CoreSettings
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.core.bot.persist.initDB
+import com.karmios.modulo.core.bot.persist.loadSavedData
+import com.karmios.modulo.core.bot.persist.loadSettings
+import com.karmios.modulo.core.bot.persist.write
+import com.karmios.modulo.api.Mod
+import com.karmios.modulo.api.Modulo
+import com.karmios.modulo.api.ModuloModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
