@@ -38,6 +38,7 @@ jobs:
           java-version: 1.8
       - name: Deploy API to GitHub Packages
         run: ./gradlew publishApiPublicationToGithubRepository
+        continue-on-error: true
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSWORD }}
