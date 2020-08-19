@@ -1,4 +1,4 @@
-package com.karmios.code.modulo.core
+package com.karmios.modulo.core
 
 import io.github.classgraph.ClassGraph
 import org.pf4j.AbstractExtensionFinder

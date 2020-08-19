@@ -1,4 +1,5 @@
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 publishing {
     publications {
@@ -8,42 +9,70 @@ publishing {
             version = parent.version
 
             pom {
-                name.set(project.name)
-                description.set("Used to create Modulo plugins")
-                url.set("https://github.com/NatKarmios/modulo")
+                name = project.name
+                description = "Used to create Modulo plugins"
+                url = "https://github.com/NatKarmios/modulo"
 
                 licenses {
                     license {
-                        name.set("GNU General Public License v3.0")
-                        url.set("https://www.gnu.org/licenses/gpl-3.0.txt")
-                        distribution.set("repo")
+                        name = "GNU General Public License v3.0"
+                        url = "https://www.gnu.org/licenses/gpl-3.0.txt"
+                        distribution = "repo"
                     }
                 }
 
                 developers {
                     developer {
-                        id.set("nat karmios")
-                        name.set("Nat Karmios")
-                        email.set("nat@karmios.com")
+                        id = "nat karmios"
+                        name = "Nat Karmios"
+                        email = "nat@karmios.com"
                     }
                 }
 
                 scm {
-                    url.set("https://github.com/NatKarmios/modulo")
-                    connection.set("scm:git:https://github.com/NatKarmios/modulo.git")
-                    developerConnection.set("scm:git:https://github.com/NatKarmios/modulo.git")
+                    url = "https://github.com/NatKarmios/modulo"
+                    connection = "scm:git:https://github.com/NatKarmios/modulo.git"
+                    developerConnection = "scm:git:https://github.com/NatKarmios/modulo.git"
                 }
             }
         }
     }
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "github"
             url = uri("https://maven.pkg.github.com/NatKarmios/modulo")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
             }
         }
+        maven {
+            name = "ossrhSnapshots"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+
+            credentials {
+                username = System.getenv("OSSRH_USERNAME")
+                password = System.getenv("OSSRH_PASSWORD")
+            }
+        }
+
+        maven {
+            name = "ossrhStaging"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+            credentials {
+                username = System.getenv("OSSRH_USERNAME")
+                password = System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        publishing.publications.forEach { sign(it) }
     }
 }

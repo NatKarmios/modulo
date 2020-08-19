@@ -1,4 +1,4 @@
-package com.karmios.code.modulo.api
+package com.karmios.modulo.api
 
 import com.jessecorbett.diskord.api.model.Message
 

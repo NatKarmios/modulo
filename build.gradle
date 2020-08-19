@@ -1,4 +1,4 @@
-group 'com.karmios.code.modulo'
+group 'com.karmios.modulo'
 version '0.1'
 
 buildscript {

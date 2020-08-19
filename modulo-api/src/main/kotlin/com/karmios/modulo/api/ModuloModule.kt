@@ -1,9 +1,9 @@
-package com.karmios.code.modulo.api
+package com.karmios.modulo.api
 
 import com.jessecorbett.diskord.api.model.*
 import com.jessecorbett.diskord.api.websocket.events.*
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.persist.ModuleSettings
 import org.jetbrains.exposed.sql.Table
 import org.pf4j.ExtensionPoint
 

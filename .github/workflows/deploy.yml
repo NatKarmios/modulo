@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   deploy_core:
@@ -13,10 +13,19 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Deploy core to GitHub releases
+      - name: Deploy release to GitHub
+        if: github.ref == 'refs/heads/master'
         run: ./gradlew githubRelease
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IS_PRERELEASE: 0
+      - name: Deploy pre-release to GitHub
+        if: github.ref != 'refs/heads/master'
+        run: ./gradlew githubRelease
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IS_PRERELEASE: 1
+
 
   deploy_api:
     runs-on: ubuntu-latest
@@ -28,6 +37,24 @@ jobs:
         with:
           java-version: 1.8
       - name: Deploy API to GitHub Packages
-        run: ./gradlew publish
+        run: ./gradlew publishApiPublicationToGithubRepository
         env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSWORD }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy API to OSSRH staging
+        if: github.ref == 'refs/heads/master'
+        run: ./gradlew publishApiPublicationToOssrhStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      - name: Deploy API to OSSRH snapshots
+        if: github.ref != 'refs/heads/master'
+        run: ./gradlew publishApiPublicationToOssrhSnapshotsRepository
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}

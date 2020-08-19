@@ -1,4 +1,4 @@
-package com.karmios.code.modulo.api.persist
+package com.karmios.modulo.api.persist
 
 data class CoreSettings(
         val botToken       : String       = "",

@@ -27,7 +27,7 @@ dependencies {
 jar {
     archiveBaseName = "ModuloCore-${parent.version}"
     manifest {
-        attributes 'Main-Class': 'com.karmios.code.modulo.core.MainKt'
+        attributes 'Main-Class': 'com.karmios.modulo.core.MainKt'
     }
 
     // make fat jar
@@ -43,4 +43,5 @@ githubRelease {
     releaseName "v${parent.version}"
     body "## CHANGELOG\n${changelog().call()}"
     releaseAssets jar.destinationDirectory.getAsFileTree().files
+    prerelease (System.getenv("IS_PRERELEASE") == "1")
 }

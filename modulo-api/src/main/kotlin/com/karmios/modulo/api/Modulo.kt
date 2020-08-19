@@ -1,10 +1,10 @@
-package com.karmios.code.modulo.api
+package com.karmios.modulo.api
 
 import com.jessecorbett.diskord.api.model.Message
 import com.jessecorbett.diskord.dsl.Bot
-import com.karmios.code.modulo.api.persist.CoreSettings
-import com.karmios.code.modulo.api.persist.ModuleSavedData
-import com.karmios.code.modulo.api.persist.ModuleSettings
+import com.karmios.modulo.api.persist.CoreSettings
+import com.karmios.modulo.api.persist.ModuleSavedData
+import com.karmios.modulo.api.persist.ModuleSettings
 import kotlinx.coroutines.CoroutineScope
 
 interface Modulo {
