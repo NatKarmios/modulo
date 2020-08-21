@@ -15,17 +15,20 @@ private const val CMD_HEADER_LEVEL = 2
 internal suspend fun getHelpUrl(md: String) = paste(md)?.let { BASE_HELP_URL + it }
 
 internal val Modulo.helpMarkdown: String
-    get() = StringBuilder()
-            .append("# ").appendln(coreSettings.helpFileTitle).appendln()
-            .appendln("**Sections:**")
-            .let { sb -> modules.map { it.name }.forEach { sb.appendln("- [${it}](#${it.asHtmlId})") }; sb }
-            .appendln()
-            .appendln("***Notes:***")
-            .appendln("- *Command usage examples are in the form `${coreSettings.commandPrefix}command [required argument] <optional argument>`*")
-            .appendln("- *Commands marked with \\* are* ***admin-only*** *commands.*")
-            .appendln()
-            .let { modules.fold(it) { sb, mod -> mod.buildMarkdown(sb, coreSettings.commandPrefix) } }
-            .toString()
+    get() {
+        val modules = modules.filter { it.commands.isNotEmpty() }
+        return StringBuilder()
+                .append("# ").appendln(coreSettings.helpFileTitle).appendln()
+                .appendln("**Sections:**")
+                .let { sb -> modules.map { it.name }.forEach { sb.appendln("- [${it}](#${it.asHtmlId})") }; sb }
+                .appendln()
+                .appendln("***Notes:***")
+                .appendln("- *Command usage examples are in the form `${coreSettings.commandPrefix}command [required argument] <optional argument>`*")
+                .appendln("- *Commands marked with \\* are* ***admin-only*** *commands.*")
+                .appendln()
+                .let { modules.fold(it) { sb, mod -> mod.buildMarkdown(sb, coreSettings.commandPrefix) } }
+                .toString()
+    }
 
 fun <S : ModuleSettings, D : ModuleSavedData> ModuloModule<S, D>.buildMarkdown(sb: StringBuilder, cmdPrefix: String): StringBuilder {
     sb.appendln("<h$BASE_HEADER_LEVEL id=\"${name.asHtmlId}\">${name}</h$BASE_HEADER_LEVEL>").appendln()
