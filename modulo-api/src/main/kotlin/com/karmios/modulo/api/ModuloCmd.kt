@@ -1,6 +1,7 @@
 package com.karmios.modulo.api
 
-import com.jessecorbett.diskord.api.model.Message
+import com.jessecorbett.diskord.api.common.Message
+import java.util.Collections.emptyList
 
 
 data class ModuloCmd(

@@ -2,11 +2,9 @@
 
 package com.karmios.modulo.core.bot
 
-import com.jessecorbett.diskord.api.model.*
-import com.jessecorbett.diskord.dsl.Bot
-import com.jessecorbett.diskord.dsl.bot
-import com.jessecorbett.diskord.dsl.command
-import com.jessecorbett.diskord.dsl.commands
+import com.jessecorbett.diskord.api.common.Message
+import com.jessecorbett.diskord.bot.bot
+import com.jessecorbett.diskord.bot.classicCommands
 import com.jessecorbett.diskord.util.authorId
 import com.karmios.modulo.api.persist.CoreSettings
 import com.karmios.modulo.api.persist.ModuleSavedData
@@ -28,7 +26,7 @@ import kotlin.system.exitProcess
 
 class ModuloCore(override val modules: List<Mod>): Modulo {
     var restart = false
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+    val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     // <editor-fold desc="persist">
 
@@ -75,7 +73,7 @@ class ModuloCore(override val modules: List<Mod>): Modulo {
             bot(coreSettings.botToken) {
                 _bot = this
 
-                commands(prefix = coreSettings.commandPrefix) {
+                classicCommands(coreSettings.commandPrefix) {
                     (modules.flatMap(Mod::commands))
                         .forEach { with(it) {
                             command(name, allowBots) { invoke(this, this@ModuloCore) }
