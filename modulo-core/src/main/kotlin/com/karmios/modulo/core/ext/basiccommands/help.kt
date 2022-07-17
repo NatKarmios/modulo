@@ -8,11 +8,11 @@ import com.karmios.modulo.api.persist.ModuleSavedData
 import com.karmios.modulo.api.persist.ModuleSettings
 
 
-private const val BASE_HELP_URL = "https://natkarmios.github.io/MarkdownViewer/?url=https://cors-anywhere.herokuapp.com/"
+private const val BASE_HELP_URL = "https://natkarmios.github.io/MarkdownViewer/?url="
 private const val BASE_HEADER_LEVEL = 1
 private const val CMD_HEADER_LEVEL = 2
 
-internal suspend fun getHelpUrl(md: String) = paste(md)?.let { BASE_HELP_URL + it }
+internal suspend fun Modulo.getHelpUrl(md: String) = paste(md)?.let { BASE_HELP_URL + coreSettings.corsProxyUrl + it }
 
 internal val Modulo.helpMarkdown: String
     get() {
