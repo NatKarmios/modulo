@@ -1,7 +1,6 @@
 package com.karmios.modulo.core.bot
 
-import com.jessecorbett.diskord.api.model.Message
-import com.jessecorbett.diskord.dsl.Bot
+import com.jessecorbett.diskord.api.common.Message
 import com.jessecorbett.diskord.util.authorId
 import com.karmios.modulo.api.Modulo
 import com.karmios.modulo.api.ModuloCmd
@@ -19,4 +18,4 @@ suspend fun ModuloCmd.invoke(msg: Message, modulo: Modulo) {
 }
 
 typealias Handler<T> = suspend Modulo.(T) -> Unit
-typealias EventRegisterFunc<T> = Bot.(suspend (T) -> Unit) -> Unit
+typealias EventRegisterFunc<T> = (suspend (T) -> Unit) -> Unit

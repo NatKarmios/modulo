@@ -18,21 +18,21 @@ internal val Modulo.helpMarkdown: String
     get() {
         val modules = modules.filter { it.commands.isNotEmpty() }
         return StringBuilder()
-                .append("# ").appendln(coreSettings.helpFileTitle).appendln()
-                .appendln("**Sections:**")
-                .let { sb -> modules.map { it.name }.forEach { sb.appendln("- [${it}](#${it.asHtmlId})") }; sb }
-                .appendln()
-                .appendln("***Notes:***")
-                .appendln("- *Command usage examples are in the form `${coreSettings.commandPrefix}command [required argument] <optional argument>`*")
-                .appendln("- *Commands marked with \\* are* ***admin-only*** *commands.*")
-                .appendln()
+                .append("# ").appendLine(coreSettings.helpFileTitle).appendLine()
+                .appendLine("**Sections:**")
+                .let { sb -> modules.map { it.name }.forEach { sb.appendLine("- [${it}](#${it.asHtmlId})") }; sb }
+                .appendLine()
+                .appendLine("***Notes:***")
+                .appendLine("- *Command usage examples are in the form `${coreSettings.commandPrefix}command [required argument] <optional argument>`*")
+                .appendLine("- *Commands marked with \\* are* ***admin-only*** *commands.*")
+                .appendLine()
                 .let { modules.fold(it) { sb, mod -> mod.buildMarkdown(sb, coreSettings.commandPrefix) } }
                 .toString()
     }
 
 fun <S : ModuleSettings, D : ModuleSavedData> ModuloModule<S, D>.buildMarkdown(sb: StringBuilder, cmdPrefix: String): StringBuilder {
-    sb.appendln("<h$BASE_HEADER_LEVEL id=\"${name.asHtmlId}\">${name}</h$BASE_HEADER_LEVEL>").appendln()
-    description?.let { sb.appendln(it).appendln() }
+    sb.appendLine("<h$BASE_HEADER_LEVEL id=\"${name.asHtmlId}\">${name}</h$BASE_HEADER_LEVEL>").appendLine()
+    description?.let { sb.appendLine(it).appendLine() }
     commands.forEach { it.buildMarkdown(sb, cmdPrefix) }
     return sb
 }
@@ -43,15 +43,15 @@ fun ModuloCmd.buildMarkdown(sb: StringBuilder, cmdPrefix: String): StringBuilder
     if (adminOnly)
         sb.append(" \\*")
     sb.append(" `$name`")
-    sb.appendln().appendln()
-    description?.let { sb.appendln(it).appendln() }
+    sb.appendLine().appendLine()
+    description?.let { sb.appendLine(it).appendLine() }
     if (usageExamples.isNotEmpty())
-        sb.appendln("**Usage:**")
+        sb.appendLine("**Usage:**")
     usageExamples.map(String::trim)
-            .forEach { sb.appendln("- `$cmdPrefix$name${if (it == "") "" else " $it"}`") }
-    sb.appendln()
+            .forEach { sb.appendLine("- `$cmdPrefix$name${if (it == "") "" else " $it"}`") }
+    sb.appendLine()
     return sb
 }
 
 private val String.asHtmlId
-  get() = this.toLowerCase().replace(" ", "-")
+  get() = this.lowercase().replace(" ", "-")

@@ -1,6 +1,7 @@
 package com.karmios.modulo.api
 
 import com.jessecorbett.diskord.api.common.Message
+import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.BotContext
 import com.karmios.modulo.api.persist.CoreSettings
 import com.karmios.modulo.api.persist.ModuleSavedData
@@ -10,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 interface Modulo {
     val modules: List<Mod>
     val bot: BotContext
+    val botBase: BotBase
     val botId: String
     val scope: CoroutineScope
 

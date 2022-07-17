@@ -1,6 +1,6 @@
 package com.karmios.modulo.core.ext.basiccommands
 
-import com.jessecorbett.diskord.api.model.Message
+import com.jessecorbett.diskord.api.common.Message
 import com.jessecorbett.diskord.util.sendMessage
 import com.karmios.modulo.api.Modulo
 import com.karmios.modulo.api.ModuloCmd
@@ -29,7 +29,7 @@ internal val BasicCommands.commandList: List<ModuloCmd>
                         val channelId = it.groupValues[1]
                         // Match for the rest of the string, i.e. the message to be sonar'd
                         Regex("<#$channelId>\\s+(.+)$").find(msg.content)?.let {
-                            with(bot) { clientStore.channels[channelId].sendMessage(it.groupValues[1]) }
+                            with(bot) { channel(channelId).sendMessage(it.groupValues[1]) }
                         }
                     }
 
@@ -39,13 +39,13 @@ internal val BasicCommands.commandList: List<ModuloCmd>
             suspend fun Modulo.shutDown(msg: Message) {
                 with(bot) {
                     msg.reply("Shutting down.")
-                    shutdown()
+                    botBase.shutdown()
                 }
             }
 
             suspend fun Modulo.listRoles(msg: Message) {
                 msg.guildId?.let { guildId ->
-                    bot.clientStore.guilds[guildId]
+                    bot.guild(guildId)
                 }?.let { guild ->
                     guild.getRoles()
                             .sortedBy { -it.position }

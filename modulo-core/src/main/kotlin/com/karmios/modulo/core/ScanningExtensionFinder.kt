@@ -20,19 +20,8 @@ class ScanningExtensionFinder(pluginManager: PluginManager) : AbstractExtensionF
             log.debug("Reading extensions storage from plugin '{}'", pluginId)
             val bucket = mutableSetOf<String>()
             if (plugin.plugin != null) {
-                val scanResult = ClassGraph()
-                        .enableAllInfo()
-                        .addClassLoader(plugin.pluginClassLoader)
-                        .whitelistPackages(plugin.plugin.javaClass.`package`.name)
-                        .scan()
-                scanResult.use {
-                    scanResult.getClassesWithAnnotation(Extension::class.java.name).forEach { classInfo ->
-                        log.info("Found extension {}", classInfo.name)
-                        bucket.add(classInfo.name)
-                    }
-                }
+                scanClasses(bucket)
             }
-            debugExtensions(bucket)
             result[pluginId] = bucket
         }
         return result
@@ -42,10 +31,15 @@ class ScanningExtensionFinder(pluginManager: PluginManager) : AbstractExtensionF
         log.debug("Reading extensions storages from classpath")
         val result = mutableMapOf<String?, MutableSet<String>>()
         val bucket = mutableSetOf<String>()
+        scanClasses(bucket)
+        result[null] = bucket;
+        return result;
+    }
+
+    private fun scanClasses(bucket: MutableSet<String>) {
         val scanResult = ClassGraph()
                 .enableAllInfo()
                 .addClassLoader(javaClass.classLoader)
-                .whitelistPackages(javaClass.`package`.name)
                 .scan()
         scanResult.use {
             scanResult.getClassesWithAnnotation(Extension::class.java.name).forEach { classInfo ->
@@ -53,8 +47,6 @@ class ScanningExtensionFinder(pluginManager: PluginManager) : AbstractExtensionF
                 bucket.add(classInfo.name)
             }
         }
-        debugExtensions(bucket);
-        result[null] = bucket;
-        return result;
+        debugExtensions(bucket)
     }
 }

@@ -36,7 +36,7 @@ abstract class ModuloModule<SettingsType : ModuleSettings, SavedDataType : Modul
     open val onEmojiUpdate: Listeners<GuildEmojiUpdate> = emptyList()
     open val onIntegrationUpdate: Listeners<GuildIntegrationUpdate> = emptyList()
     open val onInviteCreate: Listeners<GuildInviteCreate> = emptyList()
-    open val onInviteDelete: Listeners<GuildInviteCreate> = emptyList()
+    open val onInviteDelete: Listeners<GuildInviteDelete> = emptyList()
     open val onUserJoin: Listeners<GuildMemberAdd> = emptyList()
     open val onUserLeave: Listeners<GuildMemberRemove> = emptyList()
     open val onMemberChunk: Listeners<GuildMembersChunk> = emptyList()
