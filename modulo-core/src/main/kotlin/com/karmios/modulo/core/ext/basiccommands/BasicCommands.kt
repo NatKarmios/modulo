@@ -27,8 +27,10 @@ class BasicCommands : ModuloModule<ModuleSettings, BasicCommandsSavedData>() {
             }
             log.info("Changes in commands detected - generating new help URL")
             savedData.helpUrl = getHelpUrl(helpMd) ?: ""
-            savedData.helpHash = helpHash
-            savedData.save()
+            if (savedData.helpUrl != "") {
+                savedData.helpHash = helpHash
+                savedData.save()
+            }
         }
     }
 

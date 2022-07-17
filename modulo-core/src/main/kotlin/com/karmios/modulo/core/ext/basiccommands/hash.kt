@@ -1,6 +1,5 @@
 package com.karmios.modulo.core.ext.basiccommands
 
-import kotlinx.serialization.toUtf8Bytes
 import java.security.MessageDigest
 
 
@@ -8,7 +7,7 @@ private const val HASH_ALGORITHM = "SHA-256"
 
 internal val String.hash: String
   get() = MessageDigest.getInstance(HASH_ALGORITHM).let { digest ->
-      digest.digest(this.toUtf8Bytes()).toHex
+      digest.digest(this.toByteArray()).toHex
   }
 
 private val ByteArray.toHex: String

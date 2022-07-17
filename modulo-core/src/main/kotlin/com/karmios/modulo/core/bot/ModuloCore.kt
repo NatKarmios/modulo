@@ -2,11 +2,12 @@
 
 package com.karmios.modulo.core.bot
 
-import com.jessecorbett.diskord.api.model.*
-import com.jessecorbett.diskord.dsl.Bot
-import com.jessecorbett.diskord.dsl.bot
-import com.jessecorbett.diskord.dsl.command
-import com.jessecorbett.diskord.dsl.commands
+import com.jessecorbett.diskord.api.common.Message
+import com.jessecorbett.diskord.api.gateway.EventDispatcher
+import com.jessecorbett.diskord.bot.BotBase
+import com.jessecorbett.diskord.bot.BotContext
+import com.jessecorbett.diskord.bot.bot as diskord
+import com.jessecorbett.diskord.bot.classicCommands
 import com.jessecorbett.diskord.util.authorId
 import com.karmios.modulo.api.persist.CoreSettings
 import com.karmios.modulo.api.persist.ModuleSavedData
@@ -28,7 +29,7 @@ import kotlin.system.exitProcess
 
 class ModuloCore(override val modules: List<Mod>): Modulo {
     var restart = false
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+    val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     // <editor-fold desc="persist">
 
@@ -72,27 +73,46 @@ class ModuloCore(override val modules: List<Mod>): Modulo {
                 exitProcess(1)
             }
 
-            bot(coreSettings.botToken) {
-                _bot = this
+            diskord(coreSettings.botToken) {
+                _botBase = this
 
-                commands(prefix = coreSettings.commandPrefix) {
-                    (modules.flatMap(Mod::commands))
-                        .forEach { with(it) {
-                            command(name, allowBots) { invoke(this, this@ModuloCore) }
-                        } }
+                var registered = false;
+                registerModule { dispatcher, context ->
+                    if (registered) return@registerModule
+                    registered = true
+
+                    _bot = context
+                    assignListeners(dispatcher)
+                    this@ModuloCore.modules.forEach {
+                        runBlocking {
+                            it.onInit(this@ModuloCore)
+                        }
+                    }
                 }
 
-                assignListeners()
-                runBlocking { modules.forEach { it.onInit(this@ModuloCore) } }
+                classicCommands(coreSettings.commandPrefix) {
+                    val commands = this@ModuloCore.modules.flatMap(Mod::commands)
+                    commands.forEach { cmd ->
+                        command(cmd.name) { msg ->
+                            if (msg.author.isBot != true || cmd.allowBots) {
+                                cmd.invoke(msg, this@ModuloCore)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     // <editor-fold desc="props">
 
-    override val bot: Bot
+    override val bot: BotContext
         get() = _bot
-    private lateinit var _bot: Bot
+    private lateinit var _bot: BotContext
+
+    override val botBase: BotBase
+        get() = _botBase
+    private lateinit var _botBase: BotBase
 
     override val scope: CoroutineScope
         get() = _scope
@@ -107,7 +127,7 @@ class ModuloCore(override val modules: List<Mod>): Modulo {
         runBlocking {
             launch {
                 with(bot) {
-                    id = clientStore.discord.getUser().id
+                    id = this.global().getUser().id
                 }
             }
         }
@@ -120,44 +140,57 @@ class ModuloCore(override val modules: List<Mod>): Modulo {
     }
 
     override suspend fun Message.triggerTyping() {
-        bot.clientStore.channels[channelId].triggerTypingIndicator()
+        bot.channel(channelId).triggerTypingIndicator()
     }
 
     @Suppress("DuplicatedCode")
-    private fun Bot.assignListeners() {
+    private fun assignListeners(dispatcher: EventDispatcher<Unit>) {
         infix fun <T> EventRegisterFunc<T>.handledBy(mapper: (Mod) -> List<Handler<T>>) {
-            this { modules.flatMap(mapper).forEach { func -> scope.launch { func(it) } } }
+            this { arg -> modules.flatMap(mapper).forEach { func -> scope.launch { func(arg) } } }
         }
 
-        Bot::started handledBy Mod::onBotStart
-        Bot::resumed handledBy Mod::onBotResume
-        Bot::channelCreated handledBy Mod::onChannelCreate
-        Bot::channelUpdated handledBy Mod::onChannelUpdate
-        Bot::channelDeleted handledBy Mod::onChannelDelete
-        Bot::pinsUpdated handledBy Mod::onChannelPinsUpdate
-        Bot::userBanned handledBy Mod::onUserBan
-        Bot::userUnbanned handledBy Mod::onUserUnban
-        Bot::guildEmojiUpdated handledBy Mod::onEmojiUpdate
-        Bot::guildIntegrationsUpdated handledBy Mod::onIntegrationUpdate
-        Bot::userJoinedGuild handledBy Mod::onUserJoin
-        Bot::guildMemberUpdated handledBy Mod::onMemberUpdate
-        Bot::userLeftGuild handledBy Mod::onUserLeave
-        Bot::roleCreated handledBy Mod::onRoleCreate
-        Bot::roleUpdated handledBy Mod::onRoleUpdate
-        Bot::roleDeleted handledBy Mod::onRoleDelete
-        Bot::messageCreated handledBy Mod::onMessage
-        Bot::messageUpdated handledBy Mod::onMessageUpdate
-        Bot::messageDeleted handledBy Mod::onMessageDelete
-        Bot::messagesBulkDeleted handledBy Mod::onMessageBulkDelete
-        Bot::reactionAdded handledBy Mod::onReactAdd
-        Bot::reactionRemoved handledBy Mod::onReactRemove
-        Bot::allReactionsRemoved handledBy Mod::onReactRemoveAll
-        Bot::userPresenceUpdated handledBy Mod::onUserPresenceUpdate
-        Bot::userTyping handledBy Mod::onUserTyping
-        Bot::userUpdated handledBy Mod::onUserUpdate
-        Bot::userVoiceStateChanged handledBy Mod::onUserVoiceStateChange
-        Bot::voiceServerUpdated handledBy Mod::onVoiceServerUpdated
-        Bot::webhookUpdated handledBy Mod::onWebhookUpdate
+        with(dispatcher) {
+            ::onChannelCreate handledBy Mod::onChannelCreate
+            ::onChannelDelete handledBy Mod::onChannelDelete
+            ::onChannelPinsUpdate handledBy Mod::onChannelPinsUpdate
+            ::onChannelUpdate handledBy Mod::onChannelUpdate
+            ::onGuildBanAdd handledBy Mod::onUserBan
+            ::onGuildBanRemove handledBy Mod::onUserUnban
+            ::onGuildEmojiUpdate handledBy Mod::onEmojiUpdate
+            ::onGuildIntegrationsUpdate handledBy Mod::onIntegrationUpdate
+            ::onGuildInviteCreate handledBy Mod::onInviteCreate
+            ::onGuildInviteDelete handledBy Mod::onInviteDelete
+            ::onGuildMemberAdd handledBy Mod::onUserJoin
+            ::onGuildMemberRemove handledBy Mod::onUserLeave
+            ::onGuildMembersChunk handledBy Mod::onMemberChunk
+            ::onGuildMemberUpdate handledBy Mod::onMemberUpdate
+            ::onGuildRoleCreate handledBy Mod::onRoleCreate
+            ::onGuildRoleDelete handledBy Mod::onRoleDelete
+            ::onGuildRoleUpdate handledBy Mod::onRoleUpdate
+            ::onGuildStickersUpdate handledBy Mod::onStickerUpdate
+            ::onMessageCreate handledBy Mod::onMessage
+            ::onMessageDelete handledBy Mod::onMessageDelete
+            ::onMessageDeleteBulk handledBy Mod::onMessageBulkDelete
+            ::onMessageReactionAdd handledBy Mod::onReactAdd
+            ::onMessageReactionRemove handledBy Mod::onReactRemove
+            ::onMessageReactionRemoveAll handledBy Mod::onReactRemoveAll
+            ::onMessageReactionRemoveEmoji handledBy Mod::onReactRemoveEmoji
+            ::onMessageUpdate handledBy Mod::onMessageUpdate
+            ::onPresenceUpdate handledBy Mod::onUserPresenceUpdate
+            ::onReady handledBy Mod::onBotStart
+            ::onResume handledBy Mod::onBotResume
+            ::onThreadCreate handledBy Mod::onThreadCreate
+            ::onThreadDelete handledBy Mod::onThreadDelete
+            ::onThreadListSync handledBy Mod::onThreadListSync
+            ::onThreadMemberUpdate handledBy Mod::onThreadMemberUpdate
+            ::onThreadMembersUpdate handledBy Mod::onThreadMembersUpdate
+            ::onThreadUpdate handledBy Mod::onThreadUpdate
+            ::onTypingStart handledBy Mod::onUserTyping
+            ::onUserUpdate handledBy Mod::onUserUpdate
+            ::onVoiceServerUpdate handledBy Mod::onVoiceServerUpdated
+            ::onVoiceStateUpdate handledBy Mod::onUserVoiceStateChange
+            ::onWebhookUpdate handledBy Mod::onWebhookUpdate
+        }
     }
 
     // </editor-fold>

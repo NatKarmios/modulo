@@ -8,7 +8,7 @@ import com.karmios.modulo.core.PasteResponseType.*
 import org.slf4j.LoggerFactory
 import kotlin.text.StringBuilder
 
-private const val BASE_URL = "https://hastebin.com"
+private const val BASE_URL = "https://www.toptal.com/developers/hastebin"
 private const val ENDPOINT_URL = "$BASE_URL/documents"
 
 
